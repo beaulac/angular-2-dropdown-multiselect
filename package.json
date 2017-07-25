@@ -36,9 +36,7 @@
     "url": "https://github.com/softsimon/angular-2-dropdown-multiselect/issues"
   },
   "homepage": "http://softsimon.github.io/angular-2-dropdown-multiselect",
-  "dependencies": {
-    "reach": "^1.0.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@angular/common": "^4.0.0",
     "@angular/core": "^4.0.0",

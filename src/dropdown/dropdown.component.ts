@@ -21,7 +21,6 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import * as reach from 'reach';
 import {
   AbstractControl,
   ControlValueAccessor,
@@ -89,14 +88,15 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, OnDestro
   private _idProp: string;
 
   idOf(object): string {
-    return reach(object, this._idProp);
+    return _reach(object, this._idProp);
   }
 
   private _nameProp: string;
 
   nameOf(object): string {
-    return reach(object, this._nameProp);
+    return _reach(object, this._nameProp);
   }
+
 
   defaultSettings: IMultiSelectSettings = {
     pullRight: false,
@@ -292,7 +292,8 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, OnDestro
           this.model.splice(parentIndex, 1);
           this.onRemoved.emit(optionParentId);
         } else if (this.parents.indexOf(optionId) > -1) {
-          let childIds = this.options.filter(child => this.model.indexOf(this.idOf(child)) > -1 && child.parentId == optionId)
+          let childIds = this.options.filter(
+            child => this.model.indexOf(this.idOf(child)) > -1 && child.parentId == optionId)
                              .map(child => this.idOf(child));
           this.model = this.model.filter(id => childIds.indexOf(id) < 0);
           childIds.forEach(childId => this.onRemoved.emit(childId));
@@ -302,7 +303,8 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, OnDestro
           this.model.push(optionId);
           this.onAdded.emit(optionId);
           if (optionParentId) {
-            let children = this.options.filter(child => this.idOf(child) !== optionId && child.parentId == optionParentId);
+            let children = this.options.filter(
+              child => this.idOf(child) !== optionId && child.parentId == optionParentId);
             if (children.every(child => this.model.indexOf(this.idOf(child)) > -1)) {
               this.model.push(optionParentId);
               this.onAdded.emit(optionParentId);
@@ -445,4 +447,24 @@ export class MultiselectDropdown implements OnInit, OnChanges, DoCheck, OnDestro
                          });
   }
 
+}
+
+function _reach(obj, chain) {
+  const path = chain.split('.');
+  let ref = obj;
+
+  for (let i = 0; i < path.length; ++i) {
+    let key = path[i];
+
+    // ref must be an object or function and contain key
+    if (ref === null
+        || (typeof ref !== 'object' && typeof ref !== 'function')
+        || !(key in ref)) {
+      return undefined;
+    }
+
+    ref = ref[key];
+  }
+
+  return ref;
 }
