@@ -31,6 +31,16 @@ export interface IMultiSelectSettings {
    * Should be less than searchMaxLimit to take effect
    */
   searchMaxRenderedItems?: number;
+  /**
+   * 'id' - By default
+   * What property should be used as id?
+   */
+  idProperty: string;
+  /**
+   * 'name' - By default
+   * What property should be used as name?
+   */
+  nameProperty: string;
   checkedStyle?: 'checkboxes' | 'glyphicon' | 'fontawesome';
   buttonClasses?: string;
   itemClasses?: string;
